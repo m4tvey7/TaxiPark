@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiPark", "TaxiPark\TaxiPark.csproj", "{3C767833-651A-473A-BEB2-26EA042A11D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C767833-651A-473A-BEB2-26EA042A11D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C767833-651A-473A-BEB2-26EA042A11D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C767833-651A-473A-BEB2-26EA042A11D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C767833-651A-473A-BEB2-26EA042A11D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3D03C71-C5B9-480E-987D-6E1C5B6E1D11}
+	EndGlobalSection
+EndGlobal

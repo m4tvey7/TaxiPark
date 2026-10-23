@@ -1,0 +1,67 @@
+﻿<Window x:Class="TaxiPark.DriverWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Водитель" Height="620" Width="1050" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="8">
+            <Button DockPanel.Dock="Right" Content="Выйти" Click="Logout_Click"/>
+            <TextBlock x:Name="TbUser" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <TabControl>
+            <TabItem Header="Автомобили и смена">
+                <DockPanel>
+                    <!-- Панель завершения смены -->
+                    <Border x:Name="PnlActive" DockPanel.Dock="Bottom" Padding="10" Background="#FFF4E5"
+                            BorderBrush="Orange" BorderThickness="0,1,0,0" Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock x:Name="TbActive" FontWeight="Bold" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Конечный пробег (спидометр):" VerticalAlignment="Center"/>
+                                <TextBox x:Name="TbEndOdo" Width="100" Margin="8,0,20,0" Padding="3"/>
+                                <TextBlock Text="Комментарий о состоянии авто:" VerticalAlignment="Center"/>
+                                <TextBox x:Name="TbComment" Width="300" Margin="8,0,20,0" Padding="3"/>
+                                <Button Content="Завершить смену" Click="EndShift_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                        <Button x:Name="BtnStart" Content="Начать смену на выбранной машине" Click="StartShift_Click"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="DgCars" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Марка" Binding="{Binding CarModel.CarBrand.name}"/>
+                            <DataGridTextColumn Header="Модель" Binding="{Binding CarModel.name}"/>
+                            <DataGridTextColumn Header="Год" Binding="{Binding year_made}"/>
+                            <DataGridTextColumn Header="Госномер" Binding="{Binding plate}"/>
+                            <DataGridTextColumn Header="Цвет" Binding="{Binding color}"/>
+                            <DataGridTextColumn Header="Пробег, км" Binding="{Binding mileage}"/>
+                            <DataGridTextColumn Header="Категория" Binding="{Binding LicenseCategory.code}"/>
+                            <DataGridTextColumn Header="Статус" Width="*" Binding="{Binding CarStatus.name}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Мои смены">
+                <DockPanel>
+                    <TextBlock x:Name="TbTotal" DockPanel.Dock="Top" Margin="8" FontWeight="Bold"/>
+                    <DataGrid x:Name="DgHistory" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Начало" Binding="{Binding Start, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Конец" Binding="{Binding End, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Автомобиль" Binding="{Binding CarName}"/>
+                            <DataGridTextColumn Header="Госномер" Binding="{Binding Plate}"/>
+                            <DataGridTextColumn Header="Спидометр (начало)" Binding="{Binding StartOdo}"/>
+                            <DataGridTextColumn Header="Спидометр (конец)" Binding="{Binding EndOdo}"/>
+                            <DataGridTextColumn Header="Пробег за смену, км" Binding="{Binding Km}"/>
+                            <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Comment}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

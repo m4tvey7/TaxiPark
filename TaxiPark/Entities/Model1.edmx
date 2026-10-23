@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TaxiParkModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="model_id" Type="int" Nullable="false" />
+          <Property Name="year_made" Type="smallint" Nullable="false" />
+          <Property Name="plate" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="color" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="mileage" Type="int" Nullable="false" />
+          <Property Name="required_category_id" Type="int" Nullable="false" />
+          <Property Name="status_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarBrand">
+          <Key>
+            <PropertyRef Name="brand_id" />
+          </Key>
+          <Property Name="brand_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarModel">
+          <Key>
+            <PropertyRef Name="model_id" />
+          </Key>
+          <Property Name="model_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="brand_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarStatus">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dispatcher">
+          <Key>
+            <PropertyRef Name="dispatcher_id" />
+          </Key>
+          <Property Name="dispatcher_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="full_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="driver_id" />
+          </Key>
+          <Property Name="driver_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="full_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="experience_years" Type="tinyint" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="hire_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DriverCategory">
+          <Key>
+            <PropertyRef Name="driver_id" />
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="driver_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LicenseCategory">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Maintenance">
+          <Key>
+            <PropertyRef Name="maintenance_id" />
+          </Key>
+          <Property Name="maintenance_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="car_id" Type="int" Nullable="false" />
+          <Property Name="dispatcher_id" Type="int" Nullable="false" />
+          <Property Name="service_date" Type="date" Nullable="false" />
+          <Property Name="mileage_at_service" Type="int" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="cost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Waybill">
+          <Key>
+            <PropertyRef Name="waybill_id" />
+          </Key>
+          <Property Name="waybill_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="driver_id" Type="int" Nullable="false" />
+          <Property Name="car_id" Type="int" Nullable="false" />
+          <Property Name="shift_date" Type="date" Nullable="false" />
+          <Property Name="start_time" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="end_time" Type="datetime2" Precision="0" />
+          <Property Name="start_odometer" Type="int" Nullable="false" />
+          <Property Name="end_odometer" Type="int" />
+          <Property Name="driver_comment" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_Car_Category">
+          <End Role="LicenseCategory" Type="Self.LicenseCategory" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseCategory">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="required_category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Model">
+          <End Role="CarModel" Type="Self.CarModel" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarModel">
+              <PropertyRef Name="model_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="model_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Status">
+          <End Role="CarStatus" Type="Self.CarStatus" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarStatus">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModel_Brand">
+          <End Role="CarBrand" Type="Self.CarBrand" Multiplicity="1" />
+          <End Role="CarModel" Type="Self.CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="brand_id" />
+            </Principal>
+            <Dependent Role="CarModel">
+              <PropertyRef Name="brand_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DriverCategory_Category">
+          <End Role="LicenseCategory" Type="Self.LicenseCategory" Multiplicity="1" />
+          <End Role="DriverCategory" Type="Self.DriverCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseCategory">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="DriverCategory">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DriverCategory_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
+          <End Role="DriverCategory" Type="Self.DriverCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="driver_id" />
+            </Principal>
+            <Dependent Role="DriverCategory">
+              <PropertyRef Name="driver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maintenance_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maintenance_Dispatcher">
+          <End Role="Dispatcher" Type="Self.Dispatcher" Multiplicity="1" />
+          <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispatcher">
+              <PropertyRef Name="dispatcher_id" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="dispatcher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybill_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Waybill" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Waybill">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybill_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
+          <End Role="Waybill" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="driver_id" />
+            </Principal>
+            <Dependent Role="Waybill">
+              <PropertyRef Name="driver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TaxiParkModelContainer">
+          <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarBrand" EntityType="Self.CarBrand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarModel" EntityType="Self.CarModel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarStatus" EntityType="Self.CarStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dispatcher" EntityType="Self.Dispatcher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DriverCategory" EntityType="Self.DriverCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseCategory" EntityType="Self.LicenseCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Maintenance" EntityType="Self.Maintenance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Waybill" EntityType="Self.Waybill" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Car_Category" Association="Self.FK_Car_Category">
+            <End Role="LicenseCategory" EntitySet="LicenseCategory" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Model" Association="Self.FK_Car_Model">
+            <End Role="CarModel" EntitySet="CarModel" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Status" Association="Self.FK_Car_Status">
+            <End Role="CarStatus" EntitySet="CarStatus" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModel_Brand" Association="Self.FK_CarModel_Brand">
+            <End Role="CarBrand" EntitySet="CarBrand" />
+            <End Role="CarModel" EntitySet="CarModel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DriverCategory_Category" Association="Self.FK_DriverCategory_Category">
+            <End Role="LicenseCategory" EntitySet="LicenseCategory" />
+            <End Role="DriverCategory" EntitySet="DriverCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DriverCategory_Driver" Association="Self.FK_DriverCategory_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="DriverCategory" EntitySet="DriverCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maintenance_Car" Association="Self.FK_Maintenance_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Maintenance" EntitySet="Maintenance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maintenance_Dispatcher" Association="Self.FK_Maintenance_Dispatcher">
+            <End Role="Dispatcher" EntitySet="Dispatcher" />
+            <End Role="Maintenance" EntitySet="Maintenance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybill_Car" Association="Self.FK_Waybill_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Waybill" EntitySet="Waybill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybill_Driver" Association="Self.FK_Waybill_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Waybill" EntitySet="Waybill" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaxiParkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="model_id" Type="Int32" Nullable="false" />
+          <Property Name="year_made" Type="Int16" Nullable="false" />
+          <Property Name="plate" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="color" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mileage" Type="Int32" Nullable="false" />
+          <Property Name="required_category_id" Type="Int32" Nullable="false" />
+          <Property Name="status_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LicenseCategory" Relationship="Self.FK_Car_Category" FromRole="Car" ToRole="LicenseCategory" />
+          <NavigationProperty Name="CarModel" Relationship="Self.FK_Car_Model" FromRole="Car" ToRole="CarModel" />
+          <NavigationProperty Name="CarStatus" Relationship="Self.FK_Car_Status" FromRole="Car" ToRole="CarStatus" />
+          <NavigationProperty Name="Maintenance" Relationship="Self.FK_Maintenance_Car" FromRole="Car" ToRole="Maintenance" />
+          <NavigationProperty Name="Waybill" Relationship="Self.FK_Waybill_Car" FromRole="Car" ToRole="Waybill" />
+        </EntityType>
+        <EntityType Name="CarBrand">
+          <Key>
+            <PropertyRef Name="brand_id" />
+          </Key>
+          <Property Name="brand_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CarModel" Relationship="Self.FK_CarModel_Brand" FromRole="CarBrand" ToRole="CarModel" />
+        </EntityType>
+        <EntityType Name="CarModel">
+          <Key>
+            <PropertyRef Name="model_id" />
+          </Key>
+          <Property Name="model_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="brand_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Car_Model" FromRole="CarModel" ToRole="Car" />
+          <NavigationProperty Name="CarBrand" Relationship="Self.FK_CarModel_Brand" FromRole="CarModel" ToRole="CarBrand" />
+        </EntityType>
+        <EntityType Name="CarStatus">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Car_Status" FromRole="CarStatus" ToRole="Car" />
+        </EntityType>
+        <EntityType Name="Dispatcher">
+          <Key>
+            <PropertyRef Name="dispatcher_id" />
+          </Key>
+          <Property Name="dispatcher_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Maintenance" Relationship="Self.FK_Maintenance_Dispatcher" FromRole="Dispatcher" ToRole="Maintenance" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="driver_id" />
+          </Key>
+          <Property Name="driver_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="experience_years" Type="Byte" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="hire_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Waybill" Relationship="Self.FK_Waybill_Driver" FromRole="Driver" ToRole="Waybill" />
+          <NavigationProperty Name="LicenseCategory" Relationship="Self.DriverCategory" FromRole="Driver" ToRole="LicenseCategory" />
+        </EntityType>
+        <EntityType Name="LicenseCategory">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Car_Category" FromRole="LicenseCategory" ToRole="Car" />
+          <NavigationProperty Name="Driver" Relationship="Self.DriverCategory" FromRole="LicenseCategory" ToRole="Driver" />
+        </EntityType>
+        <EntityType Name="Maintenance">
+          <Key>
+            <PropertyRef Name="maintenance_id" />
+          </Key>
+          <Property Name="maintenance_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="car_id" Type="Int32" Nullable="false" />
+          <Property Name="dispatcher_id" Type="Int32" Nullable="false" />
+          <Property Name="service_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="mileage_at_service" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Maintenance_Car" FromRole="Maintenance" ToRole="Car" />
+          <NavigationProperty Name="Dispatcher" Relationship="Self.FK_Maintenance_Dispatcher" FromRole="Maintenance" ToRole="Dispatcher" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Waybill">
+          <Key>
+            <PropertyRef Name="waybill_id" />
+          </Key>
+          <Property Name="waybill_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="driver_id" Type="Int32" Nullable="false" />
+          <Property Name="car_id" Type="Int32" Nullable="false" />
+          <Property Name="shift_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="start_time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="end_time" Type="DateTime" Precision="0" />
+          <Property Name="start_odometer" Type="Int32" Nullable="false" />
+          <Property Name="end_odometer" Type="Int32" />
+          <Property Name="driver_comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Waybill_Car" FromRole="Waybill" ToRole="Car" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_Waybill_Driver" FromRole="Waybill" ToRole="Driver" />
+        </EntityType>
+        <Association Name="FK_Car_Category">
+          <End Role="LicenseCategory" Type="Self.LicenseCategory" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseCategory">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="required_category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Model">
+          <End Role="CarModel" Type="Self.CarModel" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarModel">
+              <PropertyRef Name="model_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="model_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Status">
+          <End Role="CarStatus" Type="Self.CarStatus" Multiplicity="1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarStatus">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maintenance_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybill_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Waybill" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Waybill">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarModel_Brand">
+          <End Role="CarBrand" Type="Self.CarBrand" Multiplicity="1" />
+          <End Role="CarModel" Type="Self.CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="brand_id" />
+            </Principal>
+            <Dependent Role="CarModel">
+              <PropertyRef Name="brand_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maintenance_Dispatcher">
+          <End Role="Dispatcher" Type="Self.Dispatcher" Multiplicity="1" />
+          <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispatcher">
+              <PropertyRef Name="dispatcher_id" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="dispatcher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybill_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
+          <End Role="Waybill" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="driver_id" />
+            </Principal>
+            <Dependent Role="Waybill">
+              <PropertyRef Name="driver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DriverCategory">
+          <End Role="LicenseCategory" Type="Self.LicenseCategory" Multiplicity="*" />
+          <End Role="Driver" Type="Self.Driver" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="TaxiParkEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Car" EntityType="Self.Car" />
+          <EntitySet Name="CarBrand" EntityType="Self.CarBrand" />
+          <EntitySet Name="CarModel" EntityType="Self.CarModel" />
+          <EntitySet Name="CarStatus" EntityType="Self.CarStatus" />
+          <EntitySet Name="Dispatcher" EntityType="Self.Dispatcher" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" />
+          <EntitySet Name="LicenseCategory" EntityType="Self.LicenseCategory" />
+          <EntitySet Name="Maintenance" EntityType="Self.Maintenance" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Waybill" EntityType="Self.Waybill" />
+          <AssociationSet Name="FK_Car_Category" Association="Self.FK_Car_Category">
+            <End Role="LicenseCategory" EntitySet="LicenseCategory" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Model" Association="Self.FK_Car_Model">
+            <End Role="CarModel" EntitySet="CarModel" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Status" Association="Self.FK_Car_Status">
+            <End Role="CarStatus" EntitySet="CarStatus" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maintenance_Car" Association="Self.FK_Maintenance_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Maintenance" EntitySet="Maintenance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybill_Car" Association="Self.FK_Waybill_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Waybill" EntitySet="Waybill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarModel_Brand" Association="Self.FK_CarModel_Brand">
+            <End Role="CarBrand" EntitySet="CarBrand" />
+            <End Role="CarModel" EntitySet="CarModel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maintenance_Dispatcher" Association="Self.FK_Maintenance_Dispatcher">
+            <End Role="Dispatcher" EntitySet="Dispatcher" />
+            <End Role="Maintenance" EntitySet="Maintenance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybill_Driver" Association="Self.FK_Waybill_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Waybill" EntitySet="Waybill" />
+          </AssociationSet>
+          <AssociationSet Name="DriverCategory" Association="Self.DriverCategory">
+            <End Role="LicenseCategory" EntitySet="LicenseCategory" />
+            <End Role="Driver" EntitySet="Driver" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TaxiParkModelContainer" CdmEntityContainer="TaxiParkEntities">
+          <EntitySetMapping Name="Car">
+            <EntityTypeMapping TypeName="TaxiParkModel.Car">
+              <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="model_id" ColumnName="model_id" />
+                <ScalarProperty Name="year_made" ColumnName="year_made" />
+                <ScalarProperty Name="plate" ColumnName="plate" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="mileage" ColumnName="mileage" />
+                <ScalarProperty Name="required_category_id" ColumnName="required_category_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarBrand">
+            <EntityTypeMapping TypeName="TaxiParkModel.CarBrand">
+              <MappingFragment StoreEntitySet="CarBrand">
+                <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarModel">
+            <EntityTypeMapping TypeName="TaxiParkModel.CarModel">
+              <MappingFragment StoreEntitySet="CarModel">
+                <ScalarProperty Name="model_id" ColumnName="model_id" />
+                <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarStatus">
+            <EntityTypeMapping TypeName="TaxiParkModel.CarStatus">
+              <MappingFragment StoreEntitySet="CarStatus">
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dispatcher">
+            <EntityTypeMapping TypeName="TaxiParkModel.Dispatcher">
+              <MappingFragment StoreEntitySet="Dispatcher">
+                <ScalarProperty Name="dispatcher_id" ColumnName="dispatcher_id" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Driver">
+            <EntityTypeMapping TypeName="TaxiParkModel.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="driver_id" ColumnName="driver_id" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="experience_years" ColumnName="experience_years" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="hire_date" ColumnName="hire_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LicenseCategory">
+            <EntityTypeMapping TypeName="TaxiParkModel.LicenseCategory">
+              <MappingFragment StoreEntitySet="LicenseCategory">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Maintenance">
+            <EntityTypeMapping TypeName="TaxiParkModel.Maintenance">
+              <MappingFragment StoreEntitySet="Maintenance">
+                <ScalarProperty Name="maintenance_id" ColumnName="maintenance_id" />
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="dispatcher_id" ColumnName="dispatcher_id" />
+                <ScalarProperty Name="service_date" ColumnName="service_date" />
+                <ScalarProperty Name="mileage_at_service" ColumnName="mileage_at_service" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="cost" ColumnName="cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TaxiParkModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Waybill">
+            <EntityTypeMapping TypeName="TaxiParkModel.Waybill">
+              <MappingFragment StoreEntitySet="Waybill">
+                <ScalarProperty Name="waybill_id" ColumnName="waybill_id" />
+                <ScalarProperty Name="driver_id" ColumnName="driver_id" />
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="shift_date" ColumnName="shift_date" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="start_odometer" ColumnName="start_odometer" />
+                <ScalarProperty Name="end_odometer" ColumnName="end_odometer" />
+                <ScalarProperty Name="driver_comment" ColumnName="driver_comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="DriverCategory" TypeName="TaxiParkModel.DriverCategory" StoreEntitySet="DriverCategory">
+            <EndProperty Name="LicenseCategory">
+              <ScalarProperty Name="category_id" ColumnName="category_id" />
+            </EndProperty>
+            <EndProperty Name="Driver">
+              <ScalarProperty Name="driver_id" ColumnName="driver_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

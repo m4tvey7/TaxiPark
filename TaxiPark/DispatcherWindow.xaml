@@ -1,0 +1,97 @@
+﻿<Window x:Class="TaxiPark.DispatcherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Диспетчер" Height="600" Width="1150" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="8">
+            <Button DockPanel.Dock="Right" Content="Выйти" Click="Logout_Click"/>
+            <TextBlock x:Name="TbUser" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <TabControl>
+            <!-- Автомобили -->
+            <TabItem Header="Автомобили">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                        <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox x:Name="TbSearch" Width="180" Padding="3" TextChanged="Search_Changed"/>
+                        <Button Content="Добавить" Click="AddCar_Click"/>
+                        <Button Content="Изменить" Click="EditCar_Click"/>
+                        <Button Content="Удалить" Click="DeleteCar_Click"/>
+                        <Button Content="Отправить на ТО" Click="ToService_Click"/>
+                        <Button Content="ТО пройдено" Click="ServiceDone_Click"/>
+                    </StackPanel>
+                    <DataGrid x:Name="DgCars" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Марка" Binding="{Binding CarModel.CarBrand.name}"/>
+                            <DataGridTextColumn Header="Модель" Binding="{Binding CarModel.name}"/>
+                            <DataGridTextColumn Header="Год" Binding="{Binding year_made}"/>
+                            <DataGridTextColumn Header="Госномер" Binding="{Binding plate}"/>
+                            <DataGridTextColumn Header="Цвет" Binding="{Binding color}"/>
+                            <DataGridTextColumn Header="Пробег, км" Binding="{Binding mileage}"/>
+                            <DataGridTextColumn Header="Категория" Binding="{Binding LicenseCategory.code}"/>
+                            <DataGridTextColumn Header="Статус" Width="*" Binding="{Binding CarStatus.name}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Водители -->
+            <TabItem Header="Водители">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                        <Button Content="Добавить" Click="AddDriver_Click"/>
+                        <Button Content="Изменить" Click="EditDriver_Click"/>
+                        <Button Content="Удалить (увольнение)" Click="DeleteDriver_Click"/>
+                    </StackPanel>
+                    <DataGrid x:Name="DgDrivers" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Width="*" Binding="{Binding full_name}"/>
+                            <DataGridTextColumn Header="Телефон" Binding="{Binding phone}"/>
+                            <DataGridTextColumn Header="Стаж, лет" Binding="{Binding experience_years}"/>
+                            <DataGridTextColumn Header="Логин" Binding="{Binding login}"/>
+                            <DataGridTextColumn Header="Принят" Binding="{Binding hire_date, StringFormat=dd.MM.yyyy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Смены -->
+            <TabItem Header="Смены и комментарии">
+                <DockPanel>
+                    <CheckBox x:Name="CbOnlyComments" DockPanel.Dock="Top" Margin="8"
+                              Content="Только смены с комментариями"
+                              Checked="ShiftFilter_Changed" Unchecked="ShiftFilter_Changed"/>
+                    <DataGrid x:Name="DgShifts" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Начало" Binding="{Binding Start, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Конец" Binding="{Binding End, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Водитель" Binding="{Binding DriverName}"/>
+                            <DataGridTextColumn Header="Марка" Binding="{Binding Brand}"/>
+                            <DataGridTextColumn Header="Модель" Binding="{Binding Model}"/>
+                            <DataGridTextColumn Header="Госномер" Binding="{Binding Plate}"/>
+                            <DataGridTextColumn Header="Пробег за смену" Binding="{Binding Km}"/>
+                            <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Comment}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- ТО -->
+            <TabItem Header="Техобслуживание">
+                <DataGrid x:Name="DgMaint" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding service_date, StringFormat=dd.MM.yyyy}"/>
+                        <DataGridTextColumn Header="Госномер" Binding="{Binding Car.plate}"/>
+                        <DataGridTextColumn Header="Автомобиль" Binding="{Binding Car.CarModel.CarBrand.name}"/>
+                        <DataGridTextColumn Header="Пробег на момент ТО" Binding="{Binding mileage_at_service}"/>
+                        <DataGridTextColumn Header="Стоимость, руб." Binding="{Binding cost, StringFormat=N2}"/>
+                        <DataGridTextColumn Header="Диспетчер" Binding="{Binding Dispatcher.full_name}"/>
+                        <DataGridTextColumn Header="Описание работ" Width="*" Binding="{Binding description}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

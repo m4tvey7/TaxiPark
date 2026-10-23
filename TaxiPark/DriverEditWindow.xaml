@@ -1,0 +1,18 @@
+﻿<Window x:Class="TaxiPark.DriverEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Водитель" SizeToContent="Height" Width="420"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <StackPanel Margin="20">
+        <TextBlock Text="ФИО"/><TextBox x:Name="TbName" Margin="0,2,0,8"/>
+        <TextBlock Text="Телефон"/><TextBox x:Name="TbPhone" Margin="0,2,0,8"/>
+        <TextBlock Text="Стаж, лет"/><TextBox x:Name="TbExp" Margin="0,2,0,8"/>
+        <TextBlock Text="Категории прав (можно отметить несколько)"/>
+        <StackPanel x:Name="PnlCategories" Margin="0,4,0,8"/>
+        <TextBlock Text="Логин"/><TextBox x:Name="TbLogin" Margin="0,2,0,8"/>
+        <TextBlock Text="Пароль"/><TextBox x:Name="TbPassword" Margin="0,2,0,12"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Сохранить" IsDefault="True" Click="Save_Click"/>
+            <Button Content="Отмена" IsCancel="True"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
